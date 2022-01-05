@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Soldier Unit
+  - Formation Frame
   layers:
   - Default
   - TransparentFX
@@ -40,4 +42,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: background
+    uniqueID: 1860680551
+    locked: 0
+  - name: troops
+    uniqueID: 4030706569
     locked: 0
