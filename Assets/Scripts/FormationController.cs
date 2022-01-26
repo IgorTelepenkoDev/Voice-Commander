@@ -4,18 +4,6 @@ using UnityEngine;
 
 public class FormationController : MonoBehaviour
 {
-    public List<Tuple<int, int>> AvailableFormationProportions
-    {
-        get { return _availableFormationProportions; }
-        set { _availableFormationProportions = value; }
-    }
-
-    public Vector3 SoldierUnitSize
-    {
-        get { return _soldierUnitSize; }
-        set { _soldierUnitSize = value; }
-    }
-
     public int FormationUnits
     {
         get { return _formationUnits; }
@@ -42,40 +30,36 @@ public class FormationController : MonoBehaviour
     private int _formationUnits;
     private int rowsInProportionCoefficient;
 
-    // To be read from config file (json) in a centralized manner:
-    private List<Tuple<int, int>> _availableFormationProportions;
-    private Vector3 _soldierUnitSize;
+    private GameObject configDataProvider;
+    private const string gameConfigObjectTag = "Game Configurator";
 
-    private const float rowGapBetweenUnits = 0;
-    private const float columnGapBetweenUnits = 0;
+    private List<Tuple<int, int>> availableFormationProportions;
+    private Vector3 soldierUnitSize;
+    private float rowInterval;
+    private float columnInterval;
 
-    // To make in a centralized manner
-    private const string soldierUnitTag = "Soldier Unit";
-    private const string fromationBorderElemsTag = "Formation Frame";
+    private string soldierUnitTag;
+    private string formationBorderElemsTag;
+
     private const string formationAreaObjName = "area";
 
-
+    
     void Start()
     {
-        AvailableFormationProportions = new List<Tuple<int, int>>
-        {
-            Tuple.Create( 3, 5 ),
-            Tuple.Create( 3, 4 ),
-            Tuple.Create( 2, 3 )
-        };  // provide reading from json (in a centrilized manner)
+        configDataProvider = GameObject.FindGameObjectWithTag(gameConfigObjectTag);
+        var configDataReceiver = configDataProvider.GetComponent<GameConfigDataReceiver>();
 
-        var exampleUnit = GameObject.FindGameObjectWithTag(soldierUnitTag);
-        //Debug.Log("sprite size = " + exampleUnit.GetComponent<SpriteRenderer>().bounds.size);
-        SoldierUnitSize = exampleUnit.GetComponent<SpriteRenderer>().bounds.size;
+        availableFormationProportions = configDataReceiver.GetAvailableFormationProportions();
+        soldierUnitSize = configDataReceiver.SoldierUnitSize;
+        rowInterval = configDataReceiver.GetFormationRowInterval();
+        columnInterval = configDataReceiver.GetFormationColumnInterval();
+        soldierUnitTag = configDataReceiver.SoldierUnitTag;
+        formationBorderElemsTag = configDataReceiver.FormationBorderElemsTag;
+
 
         FormationSoldierUnits = GetUnitsInFormation();
     }
 
-
-    void Update()
-    {
-
-    }
 
     public List<GameObject> GetUnitsInFormation()
     {
@@ -94,13 +78,11 @@ public class FormationController : MonoBehaviour
     private void OrganizeFormation()
     {
         var formationProportion = GetBestFormationProportion();
-        //Debug.Log("Proportion = " + formationProportion);
-        //Debug.Log("Coefficient or rows/proportion row = " + rowsInProportionCoefficient);
 
         GameObject formationFrameArea = null;
         foreach (Transform childObj in gameObject.transform)
         {
-            if (childObj.gameObject.tag == fromationBorderElemsTag && childObj.gameObject.name == formationAreaObjName)
+            if (childObj.gameObject.tag == formationBorderElemsTag && childObj.gameObject.name == formationAreaObjName)
             {
                 formationFrameArea = childObj.gameObject;
                 break;
@@ -112,8 +94,8 @@ public class FormationController : MonoBehaviour
             if (formationFrameArea != null)
             {
                 formationFrameArea.transform.localScale = new Vector3(
-                    (SoldierUnitSize.x + columnGapBetweenUnits) * formationProportion.Item2 * rowsInProportionCoefficient - columnGapBetweenUnits,
-                    (SoldierUnitSize.y + rowGapBetweenUnits) * formationProportion.Item1 * rowsInProportionCoefficient - rowGapBetweenUnits);
+                    (soldierUnitSize.x + columnInterval) * formationProportion.Item2 * rowsInProportionCoefficient - columnInterval,
+                    (soldierUnitSize.y + rowInterval) * formationProportion.Item1 * rowsInProportionCoefficient - rowInterval);
 
                 var unitPositions = GetFormationPositions(formationFrameArea, formationProportion.Item1 * rowsInProportionCoefficient, formationProportion.Item2 * rowsInProportionCoefficient);
 
@@ -130,7 +112,7 @@ public class FormationController : MonoBehaviour
         Tuple<int, int> chosenFormationProportion = null;
         double unitsInFormationProportionsCoefficient = 0;
 
-        foreach (var proportion in AvailableFormationProportions)
+        foreach (var proportion in availableFormationProportions)
         {
             if (FormationUnits % (proportion.Item1 * proportion.Item2) == 0)
             {
@@ -154,7 +136,7 @@ public class FormationController : MonoBehaviour
             while (chosenFormationProportion == null)
             {
                 assumedFormationUnits++;
-                foreach (var proportion in _availableFormationProportions)
+                foreach (var proportion in availableFormationProportions)
                 {
                     if (assumedFormationUnits % (proportion.Item1 * proportion.Item2) == 0)
                     {
@@ -181,16 +163,16 @@ public class FormationController : MonoBehaviour
 
         var resultPositions = new List<Vector3>();
 
-        var startPosition = new Vector3(areaTopLeftCorner.x + SoldierUnitSize.x / 2, areaTopLeftCorner.y - SoldierUnitSize.y / 2);
+        var startPosition = new Vector3(areaTopLeftCorner.x + soldierUnitSize.x / 2, areaTopLeftCorner.y - soldierUnitSize.y / 2);
 
         for (int rowIndex = 0; rowIndex < formationRows; rowIndex++)
         {
-            var rowY = startPosition.y - (SoldierUnitSize.y + rowGapBetweenUnits) * rowIndex;
+            var rowY = startPosition.y - (soldierUnitSize.y + rowInterval) * rowIndex;
             var columnX = startPosition.x;
             for (int columnIndex = 0; columnIndex < formationColumns; columnIndex++)
             {
                 if (columnIndex != 0)
-                    columnX += SoldierUnitSize.x + columnGapBetweenUnits;
+                    columnX += soldierUnitSize.x + columnInterval;
                 resultPositions.Add(new Vector3(columnX, rowY));
             }
         }
