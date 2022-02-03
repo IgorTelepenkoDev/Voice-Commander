@@ -25,10 +25,11 @@ public class FormationController : MonoBehaviour
         }
     }
 
+    public int RowsInProportionCoefficient { get; private set; }
+    public Tuple<int, int> CurrentFormationProportion { get; private set; }
 
     private List<GameObject> _formationSoldierUnits;
     private int _formationUnits;
-    private int rowsInProportionCoefficient;
 
     private GameObject configDataProvider;
     private const string gameConfigObjectTag = "Game Configurator";
@@ -78,6 +79,7 @@ public class FormationController : MonoBehaviour
     private void OrganizeFormation()
     {
         var formationProportion = GetBestFormationProportion();
+        CurrentFormationProportion = formationProportion;
 
         GameObject formationFrameArea = null;
         foreach (Transform childObj in gameObject.transform)
@@ -89,15 +91,15 @@ public class FormationController : MonoBehaviour
             }
         }
 
-        if (rowsInProportionCoefficient != 0 && FormationUnits != 0)
+        if (RowsInProportionCoefficient != 0 && FormationUnits != 0)
         {
             if (formationFrameArea != null)
             {
                 formationFrameArea.transform.localScale = new Vector3(
-                    (soldierUnitSize.x + columnInterval) * formationProportion.Item2 * rowsInProportionCoefficient - columnInterval,
-                    (soldierUnitSize.y + rowInterval) * formationProportion.Item1 * rowsInProportionCoefficient - rowInterval);
+                    (soldierUnitSize.x + columnInterval) * formationProportion.Item2 * RowsInProportionCoefficient - columnInterval,
+                    (soldierUnitSize.y + rowInterval) * formationProportion.Item1 * RowsInProportionCoefficient - rowInterval);
 
-                var unitPositions = GetFormationPositions(formationFrameArea, formationProportion.Item1 * rowsInProportionCoefficient, formationProportion.Item2 * rowsInProportionCoefficient);
+                var unitPositions = GetFormationPositions(formationFrameArea, formationProportion.Item1 * RowsInProportionCoefficient, formationProportion.Item2 * RowsInProportionCoefficient);
 
                 for (int unitPositionIndex = 0; unitPositionIndex < FormationUnits; unitPositionIndex++)
                 {
@@ -127,7 +129,7 @@ public class FormationController : MonoBehaviour
 
         if (chosenFormationProportion != null)
         {
-            rowsInProportionCoefficient = Convert.ToInt32(unitsInFormationProportionsCoefficient);
+            RowsInProportionCoefficient = Convert.ToInt32(unitsInFormationProportionsCoefficient);
             return chosenFormationProportion;
         }
         else
@@ -151,7 +153,7 @@ public class FormationController : MonoBehaviour
                 }
             }
 
-            rowsInProportionCoefficient = Convert.ToInt32(unitsInFormationProportionsCoefficient);
+            RowsInProportionCoefficient = Convert.ToInt32(unitsInFormationProportionsCoefficient);
             return chosenFormationProportion;
         }
     }
