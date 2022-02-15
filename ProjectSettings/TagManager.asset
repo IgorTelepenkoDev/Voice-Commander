@@ -8,6 +8,8 @@ TagManager:
   - Formation Frame
   - Formation
   - Game Configurator
+  - Map
+  - Sector Waypoint
   layers:
   - Default
   - TransparentFX
