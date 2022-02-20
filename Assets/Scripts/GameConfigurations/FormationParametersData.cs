@@ -6,4 +6,6 @@ internal class FormationParametersData
 
     public float formationRowInterval;
     public float formationColumnInterval;
+
+    public float formationSpeed;
 }

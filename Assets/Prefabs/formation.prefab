@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 863202238502579846}
   - component: {fileID: 6624451939873491358}
+  - component: {fileID: 8655677921392441030}
   m_Layer: 0
   m_Name: formation
   m_TagString: Formation
@@ -44,7 +45,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30a33f91dc0012644896635a8781f9bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ConfigDataProvider: {fileID: 8585660313040741041, guid: 11d1ad84600dcac468780d8d8af69fde, type: 3}
+--- !u!114 &8655677921392441030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4805471294520141633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0caefa2671ef3714482d07b03a74d3fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8373602242206428388
 GameObject:
   m_ObjectHideFlags: 0

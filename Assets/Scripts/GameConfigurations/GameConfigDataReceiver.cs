@@ -8,6 +8,8 @@ public class GameConfigDataReceiver : MonoBehaviour
 {
     public string SoldierUnitTag { get { return "Soldier Unit"; } }
     public string FormationBorderElemsTag { get { return "Formation Frame"; } }
+    public string BattlefieldMapTag { get { return "Map"; } }
+    public string MapSectorWaypointTag { get { return "Sector Waypoint"; } }
 
     public GameObject etalonSoldierUnit;
     public Vector3 SoldierUnitSize { get; private set; }
@@ -49,6 +51,12 @@ public class GameConfigDataReceiver : MonoBehaviour
         return formationsParametersData.formationColumnInterval;
     }
 
+    public float GetFormationSpeed()
+    {
+        var formationsParametersData = GetFormationParametersData();
+        return formationsParametersData.formationSpeed;
+    }
+
     private FormationParametersData GetFormationParametersData(string formationParametersFilePath = formationParametersConfigFilePath)
     {
         if (File.Exists(formationParametersFilePath))
@@ -58,7 +66,7 @@ public class GameConfigDataReceiver : MonoBehaviour
         }
         else
         {
-            Debug.Log("formation parameters file not found");
+            Debug.LogError("formation parameters file not found");
             return null;
         }
     }

@@ -7,6 +7,8 @@ using UnityEngine.TestTools;
 
 public class MapTests
 {
+    private const string gameConfigObjectTag = "Game Configurator";
+
     [OneTimeSetUp]
     public void SetUp()
     {
@@ -18,7 +20,10 @@ public class MapTests
     {
         yield return null;
 
-        var battlefieldMap = GameObject.FindGameObjectWithTag("Map");
+        var configDataProvider = GameObject.FindGameObjectWithTag(gameConfigObjectTag);
+        string battlefieldMapTag = configDataProvider.GetComponent<GameConfigDataReceiver>().BattlefieldMapTag;
+
+        var battlefieldMap = GameObject.FindGameObjectWithTag(battlefieldMapTag);
         var mapController = battlefieldMap.GetComponent<MapController>();
 
         if (mapController.DefenceSectors == null || mapController.ThirdFrontSectors == null ||
