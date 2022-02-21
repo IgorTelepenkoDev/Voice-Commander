@@ -7,7 +7,9 @@ using UnityEngine;
 public class FormationMover : MonoBehaviour
 {
     public bool IsMoving { get; private set; }
+    public bool IsRotating { get; private set; }
     private float moveSpeed;
+    private float rotationSpeed;
 
     private string battlefieldMapTag;
     private string sectorWaypointTag;
@@ -24,9 +26,11 @@ public class FormationMover : MonoBehaviour
         battlefieldMapTag = configDataReceiver.BattlefieldMapTag;
         sectorWaypointTag = configDataReceiver.MapSectorWaypointTag;
         moveSpeed = configDataReceiver.GetFormationSpeed();
+        rotationSpeed = configDataReceiver.GetFormationRotationSpeed();
 
         IsMoving = false;
-        //MoveToSector(2, 2);
+        IsRotating = false;
+        //MoveToSector(1, 3);
     }
 
     public void MoveToSector(int sectorLineindex, int sectorIndex)
@@ -34,20 +38,26 @@ public class FormationMover : MonoBehaviour
         var destination = GetClosestSectorWaypoint(GetSectorWaypoints(sectorLineindex, sectorIndex));
 
         if (destination != null && moveSpeed > 0)
-        {
-            transform.rotation = GetRotationTowardsTarget(destination); // make smooth rotation before and after the movement
+        {          
+            StartCoroutine(RotateFromation(GetRotationTowardsTarget(destination), rotationSpeed));
             StartCoroutine(MoveFormation(destination, moveSpeed));
         }        
     }
 
-    public void StopMovement()
+    public void StopAllMovement()
     {
         IsMoving = false;
-        Debug.Log("The formation movement is stopped");
+        IsRotating = false;
+        Debug.Log("The formation movement (and rotation) is stopped");
     }
 
     private IEnumerator MoveFormation(GameObject destinationWaypoint, float speed)
     {
+        //while (IsRotating)
+        //{
+            //yield return new WaitForEndOfFrame(); // the formation should not move until the formation is rotated
+        //}
+
         IsMoving = true;
 
         while(!gameObject.transform.position.Equals(destinationWaypoint.transform.position) && IsMoving)
@@ -59,7 +69,9 @@ public class FormationMover : MonoBehaviour
 
         if (IsMoving)
         {
-            transform.rotation = destinationWaypoint.transform.rotation;
+            // change - the rotation should start a bit before the arrival
+            float finalRotationSlowerCoefficient = 0.5f;
+            StartCoroutine(RotateFromation(destinationWaypoint.transform.rotation, rotationSpeed * finalRotationSlowerCoefficient));
             IsMoving = false;
         }
     }
@@ -70,6 +82,23 @@ public class FormationMover : MonoBehaviour
         var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         var offset = 270f;
         return Quaternion.Euler(Vector3.forward * (angle + offset));
+    }
+
+    private IEnumerator RotateFromation(Quaternion targetRotation, float rotationSpeed = 0)
+    {
+        IsRotating = true;
+
+        float rotationAngleError = 3f;
+        while (Mathf.Abs(Quaternion.Angle(transform.rotation, targetRotation)) > rotationAngleError && IsRotating)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
+
+        if(IsRotating)
+        {
+            IsRotating = false;
+        }
     }
 
     private GameObject GetClosestSectorWaypoint(GameObject[] mapSectorWaypoints)

@@ -57,6 +57,12 @@ public class GameConfigDataReceiver : MonoBehaviour
         return formationsParametersData.formationSpeed;
     }
 
+    public float GetFormationRotationSpeed()
+    {
+        var formationsParametersData = GetFormationParametersData();
+        return formationsParametersData.formationRotationSpeed;
+    }
+
     private FormationParametersData GetFormationParametersData(string formationParametersFilePath = formationParametersConfigFilePath)
     {
         if (File.Exists(formationParametersFilePath))

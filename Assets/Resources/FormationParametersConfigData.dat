@@ -3,5 +3,6 @@
 	"formationRowInterval":0.0,
 	"formationColumnInterval":0.0,
 
-	"formationSpeed": 0.5
+	"formationSpeed": 0.5,
+	"formationRotationSpeed": 2.0
 }
