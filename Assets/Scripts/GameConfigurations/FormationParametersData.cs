@@ -7,6 +7,6 @@ internal class FormationParametersData
     public float formationRowInterval;
     public float formationColumnInterval;
 
-    public float formationSpeed;
-    public float formationRotationSpeed;
+    public float formationSpeed;    // distance / Time.deltaTime
+    public float formationRotationSpeed;    // radians / Time.deltaTime
 }

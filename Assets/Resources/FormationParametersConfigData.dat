@@ -4,5 +4,5 @@
 	"formationColumnInterval":0.0,
 
 	"formationSpeed": 0.5,
-	"formationRotationSpeed": 2.0
+	"formationRotationSpeed": 110.0
 }

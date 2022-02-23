@@ -30,7 +30,7 @@ public class FormationMover : MonoBehaviour
 
         IsMoving = false;
         IsRotating = false;
-        //MoveToSector(1, 3);
+        //MoveToSector(2, 3);
     }
 
     public void MoveToSector(int sectorLineindex, int sectorIndex)
@@ -53,25 +53,26 @@ public class FormationMover : MonoBehaviour
 
     private IEnumerator MoveFormation(GameObject destinationWaypoint, float speed)
     {
-        //while (IsRotating)
-        //{
-            //yield return new WaitForEndOfFrame(); // the formation should not move until the formation is rotated
-        //}
-
         IsMoving = true;
 
         while(!gameObject.transform.position.Equals(destinationWaypoint.transform.position) && IsMoving)
         {
             var moveVector = Vector2.MoveTowards(transform.position, destinationWaypoint.transform.position, speed * Time.deltaTime);
             transform.position = moveVector;
+
+            var distanceToDestination = Vector2.Distance(transform.position, destinationWaypoint.transform.position);
+            var arrivalRotationAngle = Quaternion.Angle(transform.rotation, destinationWaypoint.transform.rotation);
+            if(IsRotating == false && 
+                IsDistnaceProperForFormationRotationOnMovement(distanceToDestination, speed, arrivalRotationAngle, rotationSpeed))
+            {
+                StartCoroutine(RotateFromation(destinationWaypoint.transform.rotation, rotationSpeed));
+            }
+
             yield return new WaitForEndOfFrame();
         }
 
         if (IsMoving)
         {
-            // change - the rotation should start a bit before the arrival
-            float finalRotationSlowerCoefficient = 0.5f;
-            StartCoroutine(RotateFromation(destinationWaypoint.transform.rotation, rotationSpeed * finalRotationSlowerCoefficient));
             IsMoving = false;
         }
     }
@@ -87,17 +88,31 @@ public class FormationMover : MonoBehaviour
     private IEnumerator RotateFromation(Quaternion targetRotation, float rotationSpeed = 0)
     {
         IsRotating = true;
-
-        float rotationAngleError = 3f;
+        
+        float rotationAngleError = 1f;
         while (Mathf.Abs(Quaternion.Angle(transform.rotation, targetRotation)) > rotationAngleError && IsRotating)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
-
+        
         if(IsRotating)
         {
             IsRotating = false;
+        }
+    }
+
+    private bool IsDistnaceProperForFormationRotationOnMovement(float distanceToDestination, float moveSpeed, float rotationAngle, float rotationSpeed)
+    {
+        var requiredDistanceError = Time.deltaTime;
+        if (Mathf.Abs(distanceToDestination / moveSpeed - rotationAngle / rotationSpeed) < requiredDistanceError)
+        {
+            //Debug.Log("The distance is appropraite for the rotation");
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
