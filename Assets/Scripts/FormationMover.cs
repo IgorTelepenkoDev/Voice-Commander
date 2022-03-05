@@ -30,17 +30,40 @@ public class FormationMover : MonoBehaviour
 
         IsMoving = false;
         IsRotating = false;
+
+        //transform.rotation = new Quaternion(0, 0, -0.9f, 0.3f);
         //MoveToSector(2, 3);
     }
 
     public void MoveToSector(int sectorLineindex, int sectorIndex)
     {
+        float formationMoveSpeed = moveSpeed;
+        float formationRotationSpeed = rotationSpeed;
         var destination = GetClosestSectorWaypoint(GetSectorWaypoints(sectorLineindex, sectorIndex));
+        var distanceToDestination = Vector2.Distance(transform.position, destination.transform.position);
+        var rotationTowardsTarget = Quaternion.Angle(transform.rotation, GetRotationTowardsTarget(destination));
 
-        if (destination != null && moveSpeed > 0)
-        {          
-            StartCoroutine(RotateFromation(GetRotationTowardsTarget(destination), rotationSpeed));
-            StartCoroutine(MoveFormation(destination, moveSpeed));
+        if (destination != null && formationMoveSpeed > 0)
+        {
+            float availableDistanceForInitialRotationCoeff = 0.2f;
+            var maxAvailableDistanceForInitialRotation = distanceToDestination * availableDistanceForInitialRotationCoeff;
+
+            if (rotationTowardsTarget / formationRotationSpeed <= maxAvailableDistanceForInitialRotation / formationMoveSpeed)
+            {
+                // If distance is big enough, the intial formation rotation to be started (otherwise skip)
+                StartCoroutine(RotateFromation(GetRotationTowardsTarget(destination), formationRotationSpeed));
+            }
+            else
+            {
+                var arrivalRotation = Quaternion.Angle(transform.rotation, destination.transform.rotation);
+                if (arrivalRotation / formationRotationSpeed >= distanceToDestination / formationMoveSpeed)
+                {
+                    // If the distance is too small for any (initial or arrival formation rotation), arrival rotation to be started
+                    StartCoroutine(RotateFromation(destination.transform.rotation, formationRotationSpeed));
+                }
+            }
+            
+            StartCoroutine(MoveFormation(destination, formationMoveSpeed));
         }        
     }
 
@@ -65,7 +88,7 @@ public class FormationMover : MonoBehaviour
             if(IsRotating == false && 
                 IsDistnaceProperForFormationRotationOnMovement(distanceToDestination, speed, arrivalRotationAngle, rotationSpeed))
             {
-                StartCoroutine(RotateFromation(destinationWaypoint.transform.rotation, rotationSpeed));
+                StartCoroutine(RotateFromation(destinationWaypoint.transform.rotation, rotationSpeed)); // Formation arrival rotation to be started
             }
 
             yield return new WaitForEndOfFrame();
