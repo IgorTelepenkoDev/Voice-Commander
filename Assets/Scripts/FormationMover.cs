@@ -1,45 +1,53 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class FormationMover : MonoBehaviour
 {
-    public bool IsMoving { get; private set; }
+    public bool IsMoving 
+    { 
+        get { return _isMoving; } 
+        private set 
+        { 
+            _isMoving = value;
+            SetStateForUnitsInFormation(currentFormationController, _isMoving);
+        } 
+    }
     public bool IsRotating { get; private set; }
     private float moveSpeed;
     private float rotationSpeed;
 
-    private string battlefieldMapTag;
-    private string sectorWaypointTag;
+    private bool _isMoving;
 
     private GameObject configDataProvider;
     private const string gameConfigObjectTag = "Game Configurator";
 
+    private FormationDestinationFinder destinationFinder;
+    private FormationController currentFormationController;
 
     void Start()
     {
         configDataProvider = GameObject.FindGameObjectWithTag(gameConfigObjectTag);
         var configDataReceiver = configDataProvider.GetComponent<GameConfigDataReceiver>();
 
-        battlefieldMapTag = configDataReceiver.BattlefieldMapTag;
-        sectorWaypointTag = configDataReceiver.MapSectorWaypointTag;
         moveSpeed = configDataReceiver.GetFormationSpeed();
         rotationSpeed = configDataReceiver.GetFormationRotationSpeed();
+
+        destinationFinder = gameObject.GetComponent<FormationDestinationFinder>();
+        currentFormationController = gameObject.GetComponent<FormationController>();
 
         IsMoving = false;
         IsRotating = false;
 
-        //transform.rotation = new Quaternion(0, 0, -0.9f, 0.3f);
-        //MoveToSector(2, 3);
+        //MoveToSector(1, 0);        
     }
 
     public void MoveToSector(int sectorLineindex, int sectorIndex)
     {
         float formationMoveSpeed = moveSpeed;
         float formationRotationSpeed = rotationSpeed;
-        var destination = GetClosestSectorWaypoint(GetSectorWaypoints(sectorLineindex, sectorIndex));
+        var destination = destinationFinder.GetClosestSectorWaypoint(destinationFinder.GetSectorWaypoints(sectorLineindex, sectorIndex));
         var distanceToDestination = Vector2.Distance(transform.position, destination.transform.position);
         var rotationTowardsTarget = Quaternion.Angle(transform.rotation, GetRotationTowardsTarget(destination));
 
@@ -72,6 +80,15 @@ public class FormationMover : MonoBehaviour
         IsMoving = false;
         IsRotating = false;
         Debug.Log("The formation movement (and rotation) is stopped");
+    }
+
+    private void SetStateForUnitsInFormation(FormationController formationController, bool areUnitsMoving)
+    {
+        var formationUnits = formationController.FormationSoldierUnits;
+        foreach (var unit in formationUnits)
+        {
+            unit.GetComponent<UnitController>().IsMoving = areUnitsMoving;
+        }
     }
 
     private IEnumerator MoveFormation(GameObject destinationWaypoint, float speed)
@@ -137,49 +154,5 @@ public class FormationMover : MonoBehaviour
         {
             return false;
         }
-    }
-
-    private GameObject GetClosestSectorWaypoint(GameObject[] mapSectorWaypoints)
-    {
-        if (mapSectorWaypoints == null)
-        {
-            return null;
-        }
-
-        var closestWaypoint = mapSectorWaypoints.
-            OrderBy(waypoint => Vector2.Distance(gameObject.transform.position, waypoint.transform.position)).FirstOrDefault();
-
-        return closestWaypoint;
-    }
-
-    private GameObject[] GetSectorWaypoints(int sectorLineIndex, int sectorIndex)
-    {
-        var battlefieldMap = GameObject.FindGameObjectWithTag(battlefieldMapTag);
-        var mapSectors = battlefieldMap.GetComponent<MapController>().BattlefieldSectors;
-
-        GameObject targetSector;
-
-        try
-        {
-            targetSector = mapSectors[sectorLineIndex][sectorIndex];
-        }
-        catch (IndexOutOfRangeException)
-        {
-            
-            Debug.LogError("Wrong front line or sector index - out of range");
-            return null;
-        }
-
-        List<GameObject> targetWaypoints = new List<GameObject>();
-
-        foreach (Transform childSectorObj in targetSector.transform)
-        {
-            if (childSectorObj.gameObject.tag == sectorWaypointTag)
-            {
-                targetWaypoints.Add(childSectorObj.gameObject);
-            }
-        }
-
-        return targetWaypoints.ToArray();
     }
 }

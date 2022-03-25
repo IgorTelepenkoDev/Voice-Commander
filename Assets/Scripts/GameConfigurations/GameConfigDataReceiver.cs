@@ -10,6 +10,7 @@ public class GameConfigDataReceiver : MonoBehaviour
     public string FormationBorderElemsTag { get { return "Formation Frame"; } }
     public string BattlefieldMapTag { get { return "Map"; } }
     public string MapSectorWaypointTag { get { return "Sector Waypoint"; } }
+    public string FormationUnitsLayer { get { return "Troops"; } }
 
     public GameObject etalonSoldierUnit;
     public Vector3 SoldierUnitSize { get; private set; }

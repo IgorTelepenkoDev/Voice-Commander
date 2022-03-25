@@ -81,15 +81,7 @@ public class FormationController : MonoBehaviour
         var formationProportion = GetBestFormationProportion();
         CurrentFormationProportion = formationProportion;
 
-        GameObject formationFrameArea = null;
-        foreach (Transform childObj in gameObject.transform)
-        {
-            if (childObj.gameObject.tag == formationBorderElemsTag && childObj.gameObject.name == formationAreaObjName)
-            {
-                formationFrameArea = childObj.gameObject;
-                break;
-            }
-        }
+        GameObject formationFrameArea = GetFormationAreaObj();
 
         if (RowsInProportionCoefficient != 0 && FormationUnits != 0)
         {
@@ -180,5 +172,26 @@ public class FormationController : MonoBehaviour
         }
 
         return resultPositions;
+    }
+
+    internal GameObject GetFormationAreaObj()
+    {
+        GameObject formationFrameArea = null;
+
+        foreach (Transform childObj in gameObject.transform)
+        {
+            if (childObj.gameObject.tag == formationBorderElemsTag && childObj.gameObject.name == formationAreaObjName)
+            {
+                formationFrameArea = childObj.gameObject;
+                break;
+            }
+        }
+
+        if(formationFrameArea == null)
+        {
+            Debug.LogError("No formation area object found");
+        }
+
+        return formationFrameArea;
     }
 }
