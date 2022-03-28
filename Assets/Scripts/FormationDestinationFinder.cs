@@ -85,7 +85,7 @@ public class FormationDestinationFinder : MonoBehaviour
         return closestWaypoint;
     }
 
-    internal GameObject[] GetSectorWaypoints(int sectorLineIndex, int sectorIndex)
+    public GameObject[] GetSectorWaypoints(int sectorLineIndex, int sectorIndex)
     {
         var battlefieldMap = GameObject.FindGameObjectWithTag(battlefieldMapTag);
         var mapSectors = battlefieldMap.GetComponent<MapController>().BattlefieldSectors;
