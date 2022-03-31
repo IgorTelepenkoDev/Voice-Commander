@@ -15,10 +15,13 @@ public class FormationMover : MonoBehaviour
         } 
     }
     public bool IsRotating { get; private set; }
+    public Tuple<int, int> LocationSectorIndices { get; private set; }
     private float moveSpeed;
     private float rotationSpeed;
 
     private bool _isMoving;
+
+    private string battlefieldMapTag;
 
     private GameObject configDataProvider;
     private const string gameConfigObjectTag = "Game Configurator";
@@ -31,6 +34,8 @@ public class FormationMover : MonoBehaviour
         configDataProvider = GameObject.FindGameObjectWithTag(gameConfigObjectTag);
         var configDataReceiver = configDataProvider.GetComponent<GameConfigDataReceiver>();
 
+        battlefieldMapTag = configDataReceiver.BattlefieldMapTag;
+
         moveSpeed = configDataReceiver.GetFormationSpeed();
         rotationSpeed = configDataReceiver.GetFormationRotationSpeed();
 
@@ -39,6 +44,7 @@ public class FormationMover : MonoBehaviour
 
         IsMoving = false;
         IsRotating = false;
+        LocationSectorIndices = null;
 
         //MoveToSector(1, 0);        
     }
@@ -70,7 +76,9 @@ public class FormationMover : MonoBehaviour
                     StartCoroutine(RotateFromation(destination.transform.rotation, formationRotationSpeed));
                 }
             }
-            
+
+            RemoveFormationFromSector();
+            LocationSectorIndices = new Tuple<int, int>(sectorLineindex, sectorIndex);
             StartCoroutine(MoveFormation(destination, formationMoveSpeed));
         }        
     }
@@ -114,6 +122,7 @@ public class FormationMover : MonoBehaviour
         if (IsMoving)
         {
             IsMoving = false;
+            AttachFormationToSector();
         }
     }
 
@@ -154,5 +163,54 @@ public class FormationMover : MonoBehaviour
         {
             return false;
         }
+    }
+
+    private void AttachFormationToSector(int sectorLineIndex, int sectorIndex)
+    {
+        var battlefieldMap = GameObject.FindGameObjectWithTag(battlefieldMapTag);
+        var mapSectors = battlefieldMap.GetComponent<MapController>().BattlefieldSectors;
+
+        var selectedSector = mapSectors[sectorLineIndex][sectorIndex];
+        if(!selectedSector.GetComponent<MapSectorController>().LocatedFormations.Contains(gameObject))
+        {
+            selectedSector.GetComponent<MapSectorController>().LocatedFormations.Add(gameObject);
+        }
+        
+        LocationSectorIndices = new Tuple<int, int>(sectorLineIndex, sectorIndex);
+    }
+
+    private void AttachFormationToSector()
+    {
+        if (LocationSectorIndices == null)
+        {
+            Debug.Log("The formation cannot be attached to the sector, no sector indices are specified");
+            return;
+        }
+
+        var battlefieldMap = GameObject.FindGameObjectWithTag(battlefieldMapTag);
+        var mapSectors = battlefieldMap.GetComponent<MapController>().BattlefieldSectors;
+
+        var selectedSector = mapSectors[LocationSectorIndices.Item1][LocationSectorIndices.Item2];
+        if (!selectedSector.GetComponent<MapSectorController>().LocatedFormations.Contains(gameObject))
+        {
+            selectedSector.GetComponent<MapSectorController>().LocatedFormations.Add(gameObject);
+        }
+    }
+
+    private void RemoveFormationFromSector()
+    {
+        if(LocationSectorIndices == null)
+        {
+            Debug.Log("The formation is not attached to any map sector, cannot be removed from a sector");
+            return;
+        }
+
+        var battlefieldMap = GameObject.FindGameObjectWithTag(battlefieldMapTag);
+        var mapSectors = battlefieldMap.GetComponent<MapController>().BattlefieldSectors;
+
+        var selectedSector = mapSectors[LocationSectorIndices.Item1][LocationSectorIndices.Item2];
+        selectedSector.GetComponent<MapSectorController>().LocatedFormations.Remove(gameObject);
+        LocationSectorIndices = null;
+        
     }
 }

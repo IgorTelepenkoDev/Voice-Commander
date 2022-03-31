@@ -40,6 +40,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922460263620737}
   - component: {fileID: 3004922460263620736}
+  - component: {fileID: 5108618051745895048}
   m_Layer: 0
   m_Name: West sector
   m_TagString: Untagged
@@ -88,6 +89,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &5108618051745895048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922460263620742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3004922460318727593
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,6 +111,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922460318727592}
   - component: {fileID: 3004922460318727595}
+  - component: {fileID: 2001938167901912957}
   m_Layer: 0
   m_Name: West-North sector
   m_TagString: Untagged
@@ -146,6 +160,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &2001938167901912957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922460318727593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3004922460436517652
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,6 +502,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922460716104661}
   - component: {fileID: 3004922460716104660}
+  - component: {fileID: 8117058883586502022}
   m_Layer: 0
   m_Name: East-North sector
   m_TagString: Untagged
@@ -524,6 +551,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8117058883586502022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922460716104666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3004922460741389296
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,6 +573,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922460741389299}
   - component: {fileID: 3004922460741389298}
+  - component: {fileID: 809891436699708238}
   m_Layer: 0
   m_Name: East sector
   m_TagString: Untagged
@@ -582,6 +622,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &809891436699708238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922460741389296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3004922460802149576
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,6 +644,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922460802149579}
   - component: {fileID: 3004922460802149578}
+  - component: {fileID: 5431522268218297596}
   m_Layer: 0
   m_Name: East-North sector
   m_TagString: Untagged
@@ -640,6 +693,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &5431522268218297596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922460802149576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3004922460829338330
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,6 +715,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922460829338325}
   - component: {fileID: 3004922460829338324}
+  - component: {fileID: 8114948045453119491}
   m_Layer: 0
   m_Name: West sector
   m_TagString: Untagged
@@ -698,6 +764,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8114948045453119491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922460829338330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3004922460838814466
 GameObject:
   m_ObjectHideFlags: 0
@@ -738,6 +816,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922460861219845}
   - component: {fileID: 3004922460861219844}
+  - component: {fileID: 6027315617165341239}
   m_Layer: 0
   m_Name: North sector
   m_TagString: Untagged
@@ -786,6 +865,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &6027315617165341239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922460861219850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3004922460904328272
 GameObject:
   m_ObjectHideFlags: 0
@@ -1050,6 +1141,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922461193290956}
   - component: {fileID: 3004922461193290959}
+  - component: {fileID: 5845880733278128617}
   m_Layer: 0
   m_Name: West sector
   m_TagString: Untagged
@@ -1098,6 +1190,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &5845880733278128617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922461193290957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3004922461293781897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1108,6 +1212,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922461293781896}
   - component: {fileID: 3004922461293781899}
+  - component: {fileID: 6529944880432886826}
   m_Layer: 0
   m_Name: West-North sector
   m_TagString: Untagged
@@ -1156,6 +1261,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &6529944880432886826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922461293781897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3004922461319802270
 GameObject:
   m_ObjectHideFlags: 0
@@ -1310,6 +1427,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922461408946633}
   - component: {fileID: 3004922461408946632}
+  - component: {fileID: 9138062734257091935}
   m_Layer: 0
   m_Name: Defence sector
   m_TagString: Untagged
@@ -1360,6 +1478,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &9138062734257091935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922461408946638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3004922461417406678
 GameObject:
   m_ObjectHideFlags: 0
@@ -1400,6 +1530,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922461453148503}
   - component: {fileID: 3004922461453148502}
+  - component: {fileID: 8264637885190244851}
   m_Layer: 0
   m_Name: West-North sector
   m_TagString: Untagged
@@ -1448,6 +1579,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8264637885190244851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922461453148500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3004922461658284451
 GameObject:
   m_ObjectHideFlags: 0
@@ -1576,6 +1719,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922461869646536}
   - component: {fileID: 3004922461869646539}
+  - component: {fileID: 2163625932952544651}
   m_Layer: 0
   m_Name: East sector
   m_TagString: Untagged
@@ -1624,6 +1768,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &2163625932952544651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922461869646537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3004922461921004676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1836,6 +1992,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922462059956861}
   - component: {fileID: 3004922462059956860}
+  - component: {fileID: 7542008002506523100}
   m_Layer: 0
   m_Name: North sector
   m_TagString: Untagged
@@ -1884,6 +2041,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &7542008002506523100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922462059956834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3004922462076965104
 GameObject:
   m_ObjectHideFlags: 0
@@ -1894,6 +2063,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922462076965107}
   - component: {fileID: 3004922462076965106}
+  - component: {fileID: 7391032261704855271}
   m_Layer: 0
   m_Name: North sector
   m_TagString: Untagged
@@ -1942,6 +2112,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &7391032261704855271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922462076965104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3004922462089214355
 GameObject:
   m_ObjectHideFlags: 0
@@ -1952,6 +2134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922462089214354}
   - component: {fileID: 3004922462089214445}
+  - component: {fileID: 4066660677027969228}
   m_Layer: 0
   m_Name: East sector
   m_TagString: Untagged
@@ -2000,6 +2183,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &4066660677027969228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922462089214355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3004922462121886262
 GameObject:
   m_ObjectHideFlags: 0
@@ -2040,6 +2235,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3004922462155580870}
   - component: {fileID: 3004922462155580865}
+  - component: {fileID: 7792624312675829586}
   m_Layer: 0
   m_Name: East-North sector
   m_TagString: Untagged
@@ -2088,3 +2284,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &7792624312675829586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004922462155580871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30098d6324e9adb4099fe3f129bd1fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
