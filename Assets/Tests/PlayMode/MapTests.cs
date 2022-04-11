@@ -58,27 +58,27 @@ public class MapTests
 
         int defenceLineIndex = 0;
         int defenceSectorIndex = 0;
-        var foundDefenceSectorWaypoints = mapDestinationFinder.GetSectorWaypoints(defenceLineIndex, defenceSectorIndex);
+        var foundDefenceSectorWaypoints = mapDestinationFinder.GetSectorWaypoints(mapDestinationFinder.GetMapSector(defenceLineIndex, defenceSectorIndex));
         Assert.AreEqual(defenceSectorWaypoints, foundDefenceSectorWaypoints.Length);
 
         int thirdLineIndex = 1;
         for(int thirdLineSectorIndex = 0; thirdLineSectorIndex < thirdLineSectors; thirdLineSectorIndex++)
         {
-            var foundThirdLineSectorWaypoints = mapDestinationFinder.GetSectorWaypoints(thirdLineIndex, thirdLineSectorIndex);
+            var foundThirdLineSectorWaypoints = mapDestinationFinder.GetSectorWaypoints(mapDestinationFinder.GetMapSector(thirdLineIndex, thirdLineSectorIndex));
             Assert.AreEqual(thirdLineSectorWaypoints, foundThirdLineSectorWaypoints.Length);
         }
 
         int secondLineIndex = 2;
         for (int secondLineSectorIndex = 0; secondLineSectorIndex < secondLineSectors; secondLineSectorIndex++)
         {
-            var foundSecondLineSectorWaypoints = mapDestinationFinder.GetSectorWaypoints(secondLineIndex, secondLineSectorIndex);
+            var foundSecondLineSectorWaypoints = mapDestinationFinder.GetSectorWaypoints(mapDestinationFinder.GetMapSector(secondLineIndex, secondLineSectorIndex));
             Assert.AreEqual(secondLineSectorWaypoints, foundSecondLineSectorWaypoints.Length);
         }
 
         int firstLineIndex = 3;
         for (int firstLineSectorIndex = 0; firstLineSectorIndex < firstLineSectors; firstLineSectorIndex++)
         {
-            var foundFirstLineSectorWaypoints = mapDestinationFinder.GetSectorWaypoints(firstLineIndex, firstLineSectorIndex);
+            var foundFirstLineSectorWaypoints = mapDestinationFinder.GetSectorWaypoints(mapDestinationFinder.GetMapSector(firstLineIndex, firstLineSectorIndex));
             Assert.AreEqual(firstLineSectorWaypoints, foundFirstLineSectorWaypoints.Length);
         }
 

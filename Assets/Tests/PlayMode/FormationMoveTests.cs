@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -85,5 +86,46 @@ public class FormationMoveTests
 
         GameObject.Destroy(formationlocatedInDestination);
         GameObject.Destroy(testMovingFormation);
+    }
+
+    [UnityTest]
+    public IEnumerator Destination_position_in_sector_found_properly()
+    {
+        GameObject testMovingFormation = GameObject.Instantiate(FormationTests.GetFormationPrefab(), Vector2.zero, Quaternion.identity);
+        yield return null;
+        testMovingFormation.GetComponent<FormationController>().FormationSoldierUnits = new List<GameObject> { GameObject.Instantiate(FormationTests.GetSoldierUnitPrefab(), testMovingFormation.transform.position, testMovingFormation.transform.rotation) };
+        yield return null;
+
+        Tuple<int, int> destinationSectorIndices = new Tuple<int, int>(3, 3);
+        var destinationSector = testMovingFormation.GetComponent<FormationDestinationFinder>().GetMapSector(destinationSectorIndices.Item1, destinationSectorIndices.Item2);
+        var destinationSectorWaypoint = testMovingFormation.GetComponent<FormationDestinationFinder>().GetClosestSectorWaypoint(testMovingFormation.GetComponent<FormationDestinationFinder>().GetSectorWaypoints(destinationSector));
+
+        var foundDestinationPosition = testMovingFormation.GetComponent<FormationDestinationFinder>().GetProperWayDestination(destinationSector);
+
+        // The standard waypoint position is not occupied by any formation
+        Assert.AreEqual((Vector2)destinationSectorWaypoint.transform.position, foundDestinationPosition);
+
+        // Located in the sector waypoint
+        GameObject testLocatedFormation = GameObject.Instantiate(FormationTests.GetFormationPrefab(), destinationSectorWaypoint.transform.position, Quaternion.identity);
+        yield return null;
+        testLocatedFormation.GetComponent<FormationController>().FormationSoldierUnits = new List<GameObject> { GameObject.Instantiate(FormationTests.GetSoldierUnitPrefab(), testLocatedFormation.transform.position, testLocatedFormation.transform.rotation), 
+            GameObject.Instantiate(FormationTests.GetSoldierUnitPrefab(), testLocatedFormation.transform.position, testLocatedFormation.transform.rotation), 
+            GameObject.Instantiate(FormationTests.GetSoldierUnitPrefab(), testLocatedFormation.transform.position, testLocatedFormation.transform.rotation), 
+            GameObject.Instantiate(FormationTests.GetSoldierUnitPrefab(), testLocatedFormation.transform.position, testLocatedFormation.transform.rotation) };
+        yield return null;
+
+        foundDestinationPosition = testMovingFormation.GetComponent<FormationDestinationFinder>().GetProperWayDestination(destinationSector);
+
+        Assert.AreNotEqual((Vector2)destinationSectorWaypoint.transform.position, foundDestinationPosition);
+
+        var positionForFormationFromSide = new Vector2(7.7f, 2.2f);
+        GameObject testMovingFormationFromSide = GameObject.Instantiate(FormationTests.GetFormationPrefab(), positionForFormationFromSide, Quaternion.identity);
+        yield return null;
+        testMovingFormationFromSide.GetComponent<FormationController>().FormationSoldierUnits = new List<GameObject> { GameObject.Instantiate(FormationTests.GetSoldierUnitPrefab(), testMovingFormationFromSide.transform.position, testMovingFormationFromSide.transform.rotation) };
+        yield return null;
+
+        var foundDestinationForFormationMovingFromSide = testMovingFormationFromSide.GetComponent<FormationDestinationFinder>().GetProperWayDestination(destinationSector);
+        // Formations moving from different sides will have different destination positions in sector (in case there is one formation already located)
+        Assert.AreNotEqual(foundDestinationForFormationMovingFromSide, foundDestinationPosition);
     }
 }

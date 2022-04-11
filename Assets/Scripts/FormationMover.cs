@@ -29,6 +29,8 @@ public class FormationMover : MonoBehaviour
     private FormationDestinationFinder destinationFinder;
     private FormationController currentFormationController;
 
+    private Quaternion defaultFormationRotation = Quaternion.identity;
+
     void Start()
     {
         configDataProvider = GameObject.FindGameObjectWithTag(gameConfigObjectTag);
@@ -46,20 +48,22 @@ public class FormationMover : MonoBehaviour
         IsRotating = false;
         LocationSectorIndices = null;
 
-        //MoveToSector(1, 0);        
+        //MoveToSector(1, 1);
     }
 
     public void MoveToSector(int sectorLineindex, int sectorIndex)
     {
         float formationMoveSpeed = moveSpeed;
         float formationRotationSpeed = rotationSpeed;
-        var destination = destinationFinder.GetClosestSectorWaypoint(destinationFinder.GetSectorWaypoints(sectorLineindex, sectorIndex));
-        var distanceToDestination = Vector2.Distance(transform.position, destination.transform.position);
+
+        var destination = destinationFinder.GetProperWayDestination(destinationFinder.GetMapSector(sectorLineindex, sectorIndex));
+
+        var distanceToDestination = Vector2.Distance(transform.position, destination);
         var rotationTowardsTarget = Quaternion.Angle(transform.rotation, GetRotationTowardsTarget(destination));
 
         if (destination != null && formationMoveSpeed > 0)
         {
-            float availableDistanceForInitialRotationCoeff = 0.2f;
+            float availableDistanceForInitialRotationCoeff = 0.25f;
             var maxAvailableDistanceForInitialRotation = distanceToDestination * availableDistanceForInitialRotationCoeff;
 
             if (rotationTowardsTarget / formationRotationSpeed <= maxAvailableDistanceForInitialRotation / formationMoveSpeed)
@@ -69,18 +73,78 @@ public class FormationMover : MonoBehaviour
             }
             else
             {
-                var arrivalRotation = Quaternion.Angle(transform.rotation, destination.transform.rotation);
+                var arrivalRotation = Quaternion.Angle(transform.rotation, defaultFormationRotation);
                 if (arrivalRotation / formationRotationSpeed >= distanceToDestination / formationMoveSpeed)
                 {
                     // If the distance is too small for any (initial or arrival formation rotation), arrival rotation to be started
-                    StartCoroutine(RotateFromation(destination.transform.rotation, formationRotationSpeed));
+                    StartCoroutine(RotateFromation(defaultFormationRotation, formationRotationSpeed));
                 }
             }
 
             RemoveFormationFromSector();
             LocationSectorIndices = new Tuple<int, int>(sectorLineindex, sectorIndex);
             StartCoroutine(MoveFormation(destination, formationMoveSpeed));
+
+            int locatedFormationsInDestinationsSector = destinationFinder.GetMapSector(sectorLineindex, sectorIndex).GetComponent<MapSectorController>().LocatedFormations.Count;
+            StartCoroutine(CheckForDestinationPositionChange(destination, new Tuple<int, int>(sectorLineindex, sectorIndex), locatedFormationsInDestinationsSector));
         }        
+    }
+
+    private IEnumerator MoveFormation(Vector2 destinationWaypointPosition, float speed)
+    {
+        IsMoving = true;
+
+        while (!gameObject.transform.position.Equals(destinationWaypointPosition) && IsMoving)
+        {
+            var moveVector = Vector2.MoveTowards(transform.position, destinationWaypointPosition, speed * Time.deltaTime);
+            transform.position = moveVector;
+
+            var distanceToDestination = Vector2.Distance(transform.position, destinationWaypointPosition);
+            var arrivalRotationAngle = Quaternion.Angle(transform.rotation, defaultFormationRotation);
+            if (IsRotating == false &&
+                IsDistnaceProperForFormationRotationOnMovement(distanceToDestination, speed, arrivalRotationAngle, rotationSpeed))
+            {
+                StartCoroutine(RotateFromation(defaultFormationRotation, rotationSpeed)); // Formation arrival rotation to be started
+            }
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        if (IsMoving)
+        {
+            IsMoving = false;
+            AttachFormationToSector();
+        }
+    }
+
+    private IEnumerator CheckForDestinationPositionChange(Vector2 previouslyChosenDestination, Tuple<int, int> destinationMapSectorIndices, int previouslyLocatedFromationsInSector)
+    {
+        yield return new WaitForEndOfFrame();
+
+        var destinationMapSector = destinationFinder.GetMapSector(destinationMapSectorIndices.Item1, destinationMapSectorIndices.Item2);
+        while (IsMoving)
+        {
+            int currentlyLocatedFromationsInSector = destinationMapSector.GetComponent<MapSectorController>().LocatedFormations.Count;
+            if (currentlyLocatedFromationsInSector != previouslyLocatedFromationsInSector)
+            {
+                var currentlyChosenDestination = destinationFinder.GetProperWayDestination(destinationMapSector);
+                if (!currentlyChosenDestination.Equals(previouslyChosenDestination))
+                {
+                    StartCoroutine(RestartMovement(destinationMapSectorIndices.Item1, destinationMapSectorIndices.Item2));
+                }
+            }
+
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    private IEnumerator RestartMovement(int destinationSectorLineIndex, int destinationSectorIndex)
+    {
+        StopAllMovement();
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+
+        MoveToSector(destinationSectorLineIndex, destinationSectorIndex);
     }
 
     public void StopAllMovement()
@@ -99,36 +163,9 @@ public class FormationMover : MonoBehaviour
         }
     }
 
-    private IEnumerator MoveFormation(GameObject destinationWaypoint, float speed)
+    private Quaternion GetRotationTowardsTarget (Vector2 targetPosition)
     {
-        IsMoving = true;
-
-        while(!gameObject.transform.position.Equals(destinationWaypoint.transform.position) && IsMoving)
-        {
-            var moveVector = Vector2.MoveTowards(transform.position, destinationWaypoint.transform.position, speed * Time.deltaTime);
-            transform.position = moveVector;
-
-            var distanceToDestination = Vector2.Distance(transform.position, destinationWaypoint.transform.position);
-            var arrivalRotationAngle = Quaternion.Angle(transform.rotation, destinationWaypoint.transform.rotation);
-            if(IsRotating == false && 
-                IsDistnaceProperForFormationRotationOnMovement(distanceToDestination, speed, arrivalRotationAngle, rotationSpeed))
-            {
-                StartCoroutine(RotateFromation(destinationWaypoint.transform.rotation, rotationSpeed)); // Formation arrival rotation to be started
-            }
-
-            yield return new WaitForEndOfFrame();
-        }
-
-        if (IsMoving)
-        {
-            IsMoving = false;
-            AttachFormationToSector();
-        }
-    }
-
-    private Quaternion GetRotationTowardsTarget (GameObject target)
-    {
-        Vector2 direction = ((Vector2)target.transform.position - (Vector2)transform.position).normalized;
+        Vector2 direction = (targetPosition - (Vector2)transform.position).normalized;
         var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         var offset = 270f;
         return Quaternion.Euler(Vector3.forward * (angle + offset));
@@ -138,7 +175,7 @@ public class FormationMover : MonoBehaviour
     {
         IsRotating = true;
         
-        float rotationAngleError = 1f;
+        float rotationAngleError = 0.1f;
         while (Mathf.Abs(Quaternion.Angle(transform.rotation, targetRotation)) > rotationAngleError && IsRotating)
         {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);

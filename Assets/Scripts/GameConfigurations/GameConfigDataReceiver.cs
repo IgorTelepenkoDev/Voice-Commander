@@ -52,6 +52,18 @@ public class GameConfigDataReceiver : MonoBehaviour
         return formationsParametersData.formationColumnInterval;
     }
 
+    public float GetDistanceBetweenFormations()
+    {
+        var formationsParametersData = GetFormationParametersData();
+        return formationsParametersData.distanceBetweenFormations;
+    }
+
+    public float GetIntervalBetweenFormations()
+    {
+        var formationsParametersData = GetFormationParametersData();
+        return formationsParametersData.intervalBetweenFormations;
+    }
+
     public float GetFormationSpeed()
     {
         var formationsParametersData = GetFormationParametersData();

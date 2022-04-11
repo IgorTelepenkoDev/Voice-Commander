@@ -2,7 +2,10 @@
 	"formationProportionOptions":[[3,5],[3,4],[2,3]],
 	"formationRowInterval":0.0,
 	"formationColumnInterval":0.0,
+	
+	"distanceBetweenFormations":0.04,
+	"intervalBetweenFormations":0.04,
 
-	"formationSpeed": 0.5,
-	"formationRotationSpeed": 110.0
+	"formationSpeed":0.5,
+	"formationRotationSpeed":110.0
 }
